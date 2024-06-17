@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class ProductController {
 
@@ -16,29 +17,12 @@ public class ProductController {
     private ProductService productService;
 
 
-    @GetMapping("/create/{brandId}/{categoryId}/new")
-    public String showCreateProduct(@PathVariable Long brandId, @PathVariable Long categoryId, Model model) {
+    @PostMapping("/product/create")
+    public String createProduct(@ModelAttribute ProductDto productDto) {
 
-        model.addAttribute("brandId", brandId);
-        model.addAttribute("categoryId", categoryId);
-        model.addAttribute("posts", new ProductDto());
-        return "createProduct";//프론트 페이지
-    }
-
-    @PostMapping("/create/{brandId}/{categoryId}")
-    public String createProduct(@PathVariable Long brandId, @PathVariable Long categoryId, @ModelAttribute ProductDto productDto) {
-
-        productService.createProduct(brandId, categoryId, productDto);
+        productService.createProduct(productDto);
 
         return "managerPage"; // 관리자 페이지로 이동
-    }
-
-    @GetMapping("/product/edit/{productId}")
-    public String showEditProduct(@PathVariable Long productId, Model model) {
-        // 상품 상세 페이지에서 수정 페이지로 넘어가게 할 예정
-        ProductDto product = productService.getProductById(productId);
-        model.addAttribute("products", product);
-        return "editProduct";
     }
 
     @PostMapping("/product/edit/{productId}")
@@ -57,7 +41,6 @@ public class ProductController {
 
     @GetMapping("product/{productId}")
     public String showProductDetail(@PathVariable Long productId, Model model) {
-        // brandId, categoryId 가져오게 할 예정
 
         ProductDto product = productService.getProductById(productId);
 

@@ -9,9 +9,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    // productid로 정보를 불러오기 위해 추가
-    Page<Product> findByProductId(Long productId, Pageable pageable);
-
-
 
 }
