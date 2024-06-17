@@ -1,7 +1,10 @@
 package com.elice.slowslow.product.controller;
 
+import com.elice.slowslow.product.Product;
 import com.elice.slowslow.product.dto.ProductDto;
 import com.elice.slowslow.product.service.ProductService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,37 +21,30 @@ public class ProductController {
 
 
     @PostMapping("/product/create")
-    public String createProduct(@ModelAttribute ProductDto productDto) {
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
 
-        productService.createProduct(productDto);
-
-        return "managerPage"; // 관리자 페이지로 이동
+        return productService.createProduct(productDto);
     }
 
-    @PostMapping("/product/edit/{productId}")
-    public String editProduct(@PathVariable Long productId, @ModelAttribute ProductDto productDto) {
-        productService.updatePost(productId, productDto);
-        return "productDetail"; // 수정한 페이지로 이동하게 할 예정.
+    @PostMapping("/product/update/{productId}")
+    public ProductDto updateProduct(@PathVariable Long productId, @RequestBody ProductDto productDto) {
+
+        return  productService.updatePost(productId, productDto); // 수정한 페이지로 이동하게 할 예정.
     }
 
-    @DeleteMapping("/product/delete/{productId}")
-    public String deleteProduct(@PathVariable Long productId) {
-        // 상품 상세 페이지에서 삭제하게끔?
-        productService.deleteProduct(productId);
-        return "productPage"; // 상세 페이지 들어가기 전 페이지로
-    }
 
 
     @GetMapping("product/{productId}")
-    public String showProductDetail(@PathVariable Long productId, Model model) {
-
-        ProductDto product = productService.getProductById(productId);
-
-        model.addAttribute("products", product);
-
-        return "productDetail";
+    public ProductDto getProductById(@PathVariable Long productId) {
+        return productService.getProductById(productId);
     }
 
+    @DeleteMapping("/product/delete/{productId}")
+    public void deleteProduct(@PathVariable Long productId) {
+
+        productService.deleteProduct(productId);
+
+    }
 
 
 }
