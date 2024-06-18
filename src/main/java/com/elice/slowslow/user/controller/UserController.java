@@ -1,6 +1,7 @@
 package com.elice.slowslow.user.controller;
 
 import com.elice.slowslow.user.User;
+import com.elice.slowslow.user.dto.CustomUserDetails;
 import com.elice.slowslow.user.dto.MembershipDTO;
 import com.elice.slowslow.user.dto.MypageResponseDTO;
 import com.elice.slowslow.user.dto.UserDTO;
@@ -11,9 +12,12 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,32 +38,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-
-    /*백엔드 프론트 연동 확인 테스트 컨트롤러입니다. 곧 지워져요.........*/
-    @GetMapping("/api/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(String.format("백엔드에서 보내는 메시지다! %s!", name));
-    }
-
-    public static class Greeting {
-        private String message;
-
-        public Greeting(String message) {
-            this.message = message;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-    }
-
-    /*백엔드 프론트 연동 테스트 코드 끝-----------*/
-
 
     @PostMapping("/api/v1/membership")
     public ResponseEntity<String> membershipProcess(@RequestBody @Valid MembershipDTO membershipDto, BindingResult bindingResult){
@@ -84,16 +62,13 @@ public class UserController {
 
     //SecurityContextHolder를 통해 현재 로그인된 사용자 이름, role 받기
     //myPage
-    @GetMapping("/mypage")
-    public ResponseEntity<MypageResponseDTO> mypage(){
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+    @GetMapping("/api/v1/mypage")
+    public ResponseEntity<MypageResponseDTO> mypage(@AuthenticationPrincipal CustomUserDetails customserDetails){
+        String name = customserDetails.getUsername();
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = customserDetails.getAuthorities().iterator().next().getAuthority();
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority auth = iter.next();
-        String role = auth.getAuthority();
+        System.out.println(role);
 
         MypageResponseDTO mypageDto = userService.findByNameProc(name);
 
@@ -233,10 +208,16 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/delete/{id}")
-    public String deleteById(@PathVariable Long id) {
-        userService.deletedById(id);
-        return "redirect:/user/";
+    @GetMapping("/api/v1/delete")
+    public String deleteByName(@RequestParam("username") String username) {
+        userService.deletedByName(username);
+        return "삭제완료";
+    }
+
+    @GetMapping("/api/v1/restoration")
+    public String restorationByName(@RequestParam("username") String username) {
+        userService.restorationByName(username);
+        return "복구완료";
     }
 
     @GetMapping("/user/logout")
