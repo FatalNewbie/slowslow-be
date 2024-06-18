@@ -77,28 +77,14 @@ public class UserService {
         }
 
         String storedPassword = user.getPassword(); // 데이터베이스에서 가져온 저장된 해시된 비밀번호
-        // 저장된 비밀번호가 null인 경우 예외 처리
-        if (storedPassword == null) {
+        // 비밀번호가 다른 경우 예외 처리
+        if (!bCryptPasswordEncoder.matches(inputPassword, storedPassword)) {
             throw new IllegalArgumentException("사용자의 비밀번호 정보가 올바르지 않습니다.");
         }
 
         // 사용자가 입력한 비밀번호와 저장된 비밀번호를 비교
         return bCryptPasswordEncoder.matches(inputPassword, storedPassword);
     }
-
-//    public UserDTO updateForm(String myEmail) {
-//        Optional<User> optionalUser = Optional.ofNullable(userRepository.findByUsername(myEmail));
-//        if(optionalUser.isPresent()) {
-//            return mapper.userToUserDTO(optionalUser.get());
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    public UserDTO update(UserDTO userDTO) {
-//        userRepository.save(mapper.userDTOToUser(userDTO));
-//        return userDTO;
-//    }
 
     public UserDTO update(UserDTO userDTO) {
         // 사용자 엔티티 생성
