@@ -181,6 +181,11 @@ public class OrderService {
         return sessionOrderPageData;
     }
 
+    // 모든 주문 조회
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
 //    // 특정 주문 상세 정보 조회
 //    public Optional<OrderDetail> getOrderDetailById(Long id) {
 //        return orderDetailRepository.findById(id);
