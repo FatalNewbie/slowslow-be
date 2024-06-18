@@ -49,26 +49,35 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         try {
             loginDto = om.readValue(request.getInputStream(), LoginDTO.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new BadCredentialsException("잘못된 로그인 정보입니다.");
         }
 
-        if(customUserDetailsService.loadUserByUsername(loginDto.getUsername()) == null ||
-                customUserDetailsService.loadUserByUsername(loginDto.getUsername()).equals("")){
-            System.out.println("존재하지 않는 계정입니다. 새로운 계정을 만들어주세요.");
-            throw new DisabledException("존재하지 않는 계정입니다. 새로운 계정을 만들어주세요.");
+        try {
+            handleLoginAttempt(loginDto);
+        } catch (BadCredentialsException e) {
+            throw new BadCredentialsException("잘못된 로그인 정보입니다.");
+        } catch (DisabledException e) {
+            throw new DisabledException("계정이 비활성화되었습니다.");
         }
 
-        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(loginDto.getUsername());
 
-        if(!bCryptPasswordEncoder.matches(loginDto.getPassword(),user.getPassword())){
-            System.out.println("비밀번호가 틀립니다. 다시 확인해주세요.");
-            throw new DisabledException("비밀번호가 틀립니다. 다시 확인해주세요.");
-        }
-
-        if (user.isDeleted()) {
-            System.out.println("이미 탈퇴된 계정입니다. 새로운 계정을 만들어주세요.");
-            throw new DisabledException("이미 탈퇴된 계정입니다. 새로운 계정을 만들어주세요.");
-        }
+//        if(customUserDetailsService.loadUserByUsername(loginDto.getUsername()) == null ||
+//                customUserDetailsService.loadUserByUsername(loginDto.getUsername()).equals("")){
+//            System.out.println("존재하지 않는 계정입니다. 새로운 계정을 만들어주세요.");
+//            throw new DisabledException("존재하지 않는 계정입니다. 새로운 계정을 만들어주세요.");
+//        }
+//
+//        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(loginDto.getUsername());
+//
+//        if(!bCryptPasswordEncoder.matches(loginDto.getPassword(),user.getPassword())){
+//            System.out.println("비밀번호가 틀립니다. 다시 확인해주세요.");
+//            throw new DisabledException("비밀번호가 틀립니다. 다시 확인해주세요.");
+//        }
+//
+//        if (user.isDeleted()) {
+//            System.out.println("이미 탈퇴된 계정입니다. 새로운 계정을 만들어주세요.");
+//            throw new DisabledException("이미 탈퇴된 계정입니다. 새로운 계정을 만들어주세요.");
+//        }
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword(), null);
 
@@ -105,5 +114,24 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         response.setStatus(401);
+    }
+
+    private void handleLoginAttempt(LoginDTO loginDto) {
+        if (customUserDetailsService.loadUserByUsername(loginDto.getUsername()) == null) {
+            System.out.println("존재하지 않는 계정입니다. 새로운 계정을 만들어주세요.");
+            throw new BadCredentialsException("잘못된 로그인 정보입니다.");
+        }
+
+        CustomUserDetails user = (CustomUserDetails) customUserDetailsService.loadUserByUsername(loginDto.getUsername());
+
+        if (!bCryptPasswordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
+            System.out.println("비밀번호가 틀립니다. 다시 확인해주세요.");
+            throw new BadCredentialsException("잘못된 로그인 정보입니다.");
+        }
+
+        if (user.isDeleted()) {
+            System.out.println("이미 탈퇴된 계정입니다. 새로운 계정을 만들어주세요.");
+            throw new DisabledException("계정이 비활성화되었습니다.");
+        }
     }
 }
