@@ -62,40 +62,23 @@ http://34.47.79.214/
 
 ### WireFrame
 ![img.png](images/wireframe2.png)
+<img style="width:90%" src="images/wireframe2.png" />
 ***
 ## 기술 스택
-
-백엔드
-
-![img_1.png](images/springsecurity.png)![img_1.png](images/swagger.png)![img.png](images/springboot.png)![img_1.png](images/mysql.png)
-
-프론트엔드
-
-![img_3.png](images/react.png)
-
-서버
-
-![img_2.png](images/amazons3.png)![img.png](images/docker.png)
-
-ML
-
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">
-
-
-
+![img.png](images/stack2.png)
 
 ***
 ### 역할 분담
 
 
-| | 이름  | 역할                                                     |
-|---|-----|--------------------------------------------------------|
-| ![img.png](images/img.png) | 박원정 | 머신러닝 모델 및 전용 서버 구축<br/>유저 관계 시스템(친구) 구현                |
-|![img_1.png](images/img_1.png) | 고의성 | 회원 인증/인가 처리                                            |
-|![img_2.png](images/img_2.png) | 김경래 | amazon s3을 이용한 프로필 이미지 설정 구현<br/>  google analytics 연동 |
-| ![img_3.png](images/img_3.png) | 김연지 | 게시글 CRUD 구현                                            |
-| ![img_4.png](images/img_4.png) | 김이삭 | 채팅 기능 구현                                               |
-|![img_5.png](images/img_5.png) | 조한휘 | 게임리스트 CRUD 구현<br/>      프론트 레이아웃 구현                    |
+| 이름  | 역할                                                     |
+|-----|--------------------------------------------------------|
+| 박원정 | 카테고리 기능                |
+| 고의성 | 유저 기능                                            |
+| 김경래 | 제품, 제품상세  |
+| 김연지 | 유저 기능                                          |
+| 김이삭 | 장바구니 기능                                              |
+| 조한휘 | 주문 기능                    |
 
 
 
