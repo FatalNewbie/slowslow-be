@@ -61,7 +61,7 @@ http://34.47.79.214/
 ***
 
 ### WireFrame
-![img.png](images/wireframe.png)
+![img.png](images/wireframe2.png)
 ***
 ## 기술 스택
 
