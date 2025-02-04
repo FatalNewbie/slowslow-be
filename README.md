@@ -7,10 +7,9 @@
 3. [프로젝트 목적](#프로젝트-목적)
 4. [프로젝트 기능 명세](#프로젝트-기능-명세)
 5. [ERD](#erd)
-6. [FlowChart](#flowchart)
-7. [WireFrame](#wireframe)
-8. [기술 스택](#기술-스택)
-9. [역할 분담](#역할-분담)
+6. [WireFrame](#wireframe)
+7. [기술 스택](#기술-스택)
+8. [역할 분담](#역할-분담)
 
 ***
 ## 개발 기간
@@ -58,11 +57,9 @@ http://34.47.79.214/
 
 ***
 ## ERD
-![erd.png](images/erd.png)
+<img style="vertical-align:bottom; margin-left:30px; display:inline;" src="images/erd.png" />
 ***
-## FlowChart
-![img.png](images/figma.png)
-***
+
 ### WireFrame
 ![img.png](images/wireframe.png)
 ***
