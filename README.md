@@ -66,7 +66,7 @@ http://34.47.79.214/
 
 ***
 ## 기술 스택
-![img.png](images/stack2.png)
+<img style="width:90%" src="images/stack2.png" />
 
 ***
 ### 역할 분담
