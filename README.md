@@ -58,11 +58,12 @@ http://34.47.79.214/
 ***
 ## ERD
 <img style="vertical-align:bottom; margin-left:30px; display:inline;" src="images/erd.png" />
+
 ***
 
 ### WireFrame
-![img.png](images/wireframe2.png)
 <img style="width:90%" src="images/wireframe2.png" />
+
 ***
 ## 기술 스택
 ![img.png](images/stack2.png)
